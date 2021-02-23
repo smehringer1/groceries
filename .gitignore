@@ -1,4 +1,5 @@
 todo.md
+.todo.md.swp
 .env
 node_modules/
 prisma/migrations/

@@ -5,7 +5,7 @@ const PORT = 8000;
 
 let userRouter = require('./routes/userRoutes');
 let authRoutes = require('./routes/authRoutes');
-let protectedRouter = require('./routes/protected/groceryRoutes')
+let protectedRouter = require('./routes/protected/protectedRoutes')
 
 app.use(express.json());
 

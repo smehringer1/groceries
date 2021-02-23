@@ -8,12 +8,16 @@ export const getUserForLogin = async (submittedCredentials : LoginCredentials) :
     const locatedAccount = await prisma.account.findFirst({
         where: {
             username : submittedCredentials.username
+        },
+        select: {
+            user : true,
+            password : true
         }
     })
     if (!locatedAccount) {
         return { success : false, message : "Error" }
     }
-    return {success : true, message : "Success retrieving user", hashedPassword : locatedAccount.password}
+    return {success : true, message : "Success retrieving user", sessionData : {user : locatedAccount.user} , hashedPassword : locatedAccount.password}
 }
 
 export const getAllUsers = async () => {
@@ -27,7 +31,7 @@ export const getAllUsers = async () => {
 }
 
 
-export const createNewAccountAndUser = async (newAccountData : NewAccountCredentials) : Promise<RegisterResponse> => {
+export const createNewAccount = async (newAccountData : NewAccountCredentials) : Promise<RegisterResponse> => {
     // Verify login name does not exist
     const loginExistenceCheck = await prisma.account.findFirst({
         where: {
@@ -52,9 +56,9 @@ export const createNewAccountAndUser = async (newAccountData : NewAccountCredent
             message: "Failure in password hashing"
         }
     }
-    let createdUser;
+    let createdAccount;
     try {
-        createdUser = await prisma.account.create({
+        createdAccount = await prisma.account.create({
             data: {
                 username : newAccountData.username,
                 password: newAccountData.password,
@@ -63,6 +67,9 @@ export const createNewAccountAndUser = async (newAccountData : NewAccountCredent
                         name: newAccountData.name
                     }
                 }
+            },
+            select: {
+                user : true
             }
         })
     } catch (error){
@@ -75,6 +82,6 @@ export const createNewAccountAndUser = async (newAccountData : NewAccountCredent
     return {
         success: true,
         message: "User successfully created",
-        userid: createdUser.userid
+        sessionData: { user : createdAccount.user }
     }
 }

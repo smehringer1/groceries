@@ -10,7 +10,9 @@ export interface LoginCredentials {
     password : string
 }
 
-
+export interface SessionData {
+    user : User
+}
 
 export interface DBResponse {
     success : boolean
@@ -18,12 +20,12 @@ export interface DBResponse {
 }
 
 export interface LoginCheckResponse extends DBResponse {
-    userid? : number
+    sessionData? : SessionData
     hashedPassword? : string
 }
 
 export interface RegisterResponse extends DBResponse{
-    userid? : number // userid does not exist if success === false
+    sessionData? : SessionData
 }
 
 export interface GroceryListingResponse extends DBResponse{
@@ -36,7 +38,7 @@ export interface GroceryListingRaw {
     store : string
 }
 
-import { Stores, Urgency } from '@prisma/client';
+import { Stores, Urgency, User } from '@prisma/client';
 
 export interface GroceryListing {
     itemName : string
@@ -45,7 +47,8 @@ export interface GroceryListing {
     createdByID : number
 }
 
+// TODO: Clearly define AuthenticatedRequest interface/type
 import {Request} from 'express';
 export interface AuthenticatedRequest extends Request {
-    userid? : number
+    sessionData? : SessionData
 }

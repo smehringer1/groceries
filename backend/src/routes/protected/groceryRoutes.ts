@@ -12,7 +12,7 @@ router.post('/create', async (req : AuthenticatedRequest, res : Response) => {
         itemName : requestBodyData.name,
         urgency : (<any>Urgency)[requestBodyData.urgency],
         store : (<any>Stores)[requestBodyData.store],
-        createdByID : req.userid! 
+        createdByID : req.sessionData?.user.id! 
     }
     const listingResponse : GroceryListingResponse = await createGroceryListing(groceryListing);
     if (listingResponse.success){
