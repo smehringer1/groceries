@@ -1,10 +1,10 @@
 import {PrismaClient} from '@prisma/client';
-import { RegistrationCredentials, LoginCredentials, RegisterResponse, LoginCheckResponse } from '../utils/interfaces'
+import { RegistrationCredentials, LoginCredentials, DB_RegisterResponse, DB_LoginCheckResponse } from '../utils/interfaces'
 import { hash } from '../utils/hash';
 
 const prisma = new PrismaClient();
 
-export const getUserForLogin = async (submittedCredentials : LoginCredentials) : Promise<LoginCheckResponse> => {
+export const getUserForLogin = async (submittedCredentials : LoginCredentials) : Promise<DB_LoginCheckResponse> => {
     const locatedAccount = await prisma.account.findFirst({
         where: {
             username : submittedCredentials.username
@@ -31,7 +31,7 @@ export const getAllUsers = async () => {
 }
 
 
-export const createNewAccount = async (newAccountData : RegistrationCredentials) : Promise<RegisterResponse> => {
+export const createNewAccount = async (newAccountData : RegistrationCredentials) : Promise<DB_RegisterResponse> => {
     // Verify login name does not exist
     const loginExistenceCheck = await prisma.account.findFirst({
         where: {
