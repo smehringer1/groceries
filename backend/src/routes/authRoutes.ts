@@ -13,10 +13,13 @@ router.post('/login', ensureUnauthenticated, async (req: Request, res: Response)
     if (loginResponse.success) {
         res.cookie('sessionID', loginResponse.sessionID, {httpOnly : true})
         res.json({
+            "success" : true,
             "sessionData" : loginResponse.sessionData
         });  
     } else {
-        res.send("Login failure");
+        res.json({
+            "success" : false
+        })
     }
     
 })
@@ -28,19 +31,26 @@ router.post('/register', ensureUnauthenticated, async (req: Request, res: Respon
     if (registrationResponse.success){
         res.cookie('sessionID', registrationResponse.sessionID, {httpOnly : true})
         res.json({
+            "success" : true,
             "sessionData" : registrationResponse.sessionData
         });  
     } else {
-        res.send("Registration failure");
+        res.json({
+            "success" : false
+        })
     }
 });
 
 router.post('/logout', (req: AuthenticatedRequest, res: Response) => {
     if (removeSession(req)){
         res.clearCookie('sessionID');
-        res.send('Logged out')
+        res.json({
+            "success" : true
+        })
     } else { // No session exists on auth header or session store
-        res.send('No session exists to log out from')
+        res.json({
+            "success" : false
+        })
     }
 });
 

@@ -1,3 +1,4 @@
+// Input data format
 
 export interface RegistrationCredentials {
     username: string
@@ -10,6 +11,21 @@ export interface LoginCredentials {
     password : string
 }
 
+export interface GroceryRaw {
+    name : string
+    urgency : string
+    store : string
+}
+
+import { GroceryItem, Stores, Urgency, User } from '@prisma/client';
+export interface NewGrocery {
+    itemName : string
+    urgency? : Urgency
+    store? : Stores
+    createdByID : number
+}
+
+// Service responses
 
 export interface LoginRegistrationResponse {
     success : boolean
@@ -17,47 +33,43 @@ export interface LoginRegistrationResponse {
     sessionData? : SessionData
 }
 
+export interface GroceryCreationResponse {
+    success : boolean
+    groceryItem? : GroceryItem 
+}
+
 export interface SessionData {
     user : User
 }
 
-export interface DBResponse {
+// DB responses
+
+export interface DB_Response {
     success : boolean
     message : string  
 }
 
-export interface LoginCheckResponse extends DBResponse {
+export interface DB_LoginCheckResponse extends DB_Response {
     sessionData? : SessionData
     hashedPassword? : string
 }
 
-export interface RegisterResponse extends DBResponse{
+export interface DB_RegisterResponse extends DB_Response{
     sessionData? : SessionData
 }
 
-export interface GroceryListingResponse extends DBResponse{
-
+export interface DB_GroceryResponse extends DB_Response{
+    groceryItem? : GroceryItem
 }
 
-export interface GroceryListingRaw {
-    name : string
-    urgency : string
-    store : string
-}
-
-import { Stores, Urgency, User } from '@prisma/client';
-
-export interface GroceryListing {
-    itemName : string
-    urgency? : Urgency
-    store? : Stores
-    createdByID : number
-}
+// Data form
 
 import {Request} from 'express';
 export interface AuthenticatedRequest extends Request {
     sessionData? : SessionData
 }
+
+// Class interfaces
 
 export interface ISessionStore {
     insertSessionData(sessionID : string, data : SessionData) : void

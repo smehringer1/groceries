@@ -1,24 +1,32 @@
 import express, {Request, Response} from 'express';
-import {AuthenticatedRequest, GroceryListing, GroceryListingRaw, GroceryListingResponse} from '../../utils/interfaces'
+import {AuthenticatedRequest, NewGrocery, GroceryRaw, GroceryCreationResponse} from '../../utils/interfaces'
 import {createGroceryListing} from '../../db/groceries';
-import { Stores, Urgency } from '@prisma/client';
+import { GroceryItem, Stores, Urgency } from '@prisma/client';
+import { createGrocery, getGroceries } from '../../services/groceries';
 
 const router = express.Router();
 
-router.post('/create', async (req : AuthenticatedRequest, res : Response) => {
-    let requestBodyData : GroceryListingRaw = req.body;  
+router.get('/', async (req : AuthenticatedRequest, res : Response) => {
+    let groceries : GroceryItem[] = await getGroceries();
+    res.json({
+        "success" : true,
+        "groceries" : groceries
+    })
+})
 
-    let groceryListing : GroceryListing = {
-        itemName : requestBodyData.name,
-        urgency : (<any>Urgency)[requestBodyData.urgency],
-        store : (<any>Stores)[requestBodyData.store],
-        createdByID : req.sessionData?.user.id! 
-    }
-    const listingResponse : GroceryListingResponse = await createGroceryListing(groceryListing);
-    if (listingResponse.success){
-        res.send("Success");
+router.post('/', async (req : AuthenticatedRequest, res : Response) => {
+    let requestBodyData : GroceryRaw = req.body;  
+
+    let createGroceryResponse : GroceryCreationResponse = await createGrocery(requestBodyData, req.sessionData?.user.id!);
+    if (createGroceryResponse.success){
+        res.json({
+            "success" : true,
+            "grocery" : createGroceryResponse.groceryItem
+        });
     } else {
-        res.send('Failure');
+        res.json({
+            "success" : false
+        });
     }
 })
 
