@@ -1,6 +1,6 @@
 import express, {Request, Response} from 'express';
 import {AuthenticatedRequest, GroceryListing, GroceryListingRaw, GroceryListingResponse} from '../../utils/interfaces'
-import {createGroceryListing} from '../../db/groceryDBActions';
+import {createGroceryListing} from '../../db/groceries';
 import { Stores, Urgency } from '@prisma/client';
 
 const router = express.Router();

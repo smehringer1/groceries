@@ -1,34 +1,36 @@
 import express, {Request, Response} from 'express';
-import {AuthenticatedRequest, LoginCheckResponse, LoginCredentials, NewAccountCredentials, RegisterResponse} from '../utils/interfaces'
-import {getUserForLogin, createNewAccount} from '../db/userDBActions'
-import {compareHashes} from '../utils/hash'
-import {createSession, ensureUnauthenticated, removeSession} from '../sessions/sessions'
+import {AuthenticatedRequest, LoginCredentials, RegistrationCredentials, LoginRegistrationResponse} from '../utils/interfaces'
+import {ensureUnauthenticated, removeSession} from '../sessions/sessions'
+import { login, register } from '../services/user';
 
 const router = express.Router();
 
 
 router.post('/login', ensureUnauthenticated, async (req: Request, res: Response) => {
-    const loginCredentials : LoginCredentials = req.body; // Submitted login credentials
-    const queriedUser : LoginCheckResponse = await getUserForLogin(loginCredentials); // Query using login username
-    if (queriedUser.success && await compareHashes(queriedUser.hashedPassword!, loginCredentials.password)){ // Username and password valid
-            const sessionData = queriedUser.sessionData!;
-            const sessionID = createSession(sessionData);
-            res.cookie('sessionID', sessionID, {httpOnly : true})
-            res.send('Success');
+    const loginCredentials : LoginCredentials = req.body;
+    const loginResponse : LoginRegistrationResponse = await login(loginCredentials);
+    if (loginResponse.success) {
+        res.cookie('sessionID', loginResponse.sessionID, {httpOnly : true})
+        res.json({
+            "sessionData" : loginResponse.sessionData
+        });  
     } else {
-        res.send(queriedUser.message);
-    }  
+        res.send("Login failure");
+    }
+    
 })
 
 router.post('/register', ensureUnauthenticated, async (req: Request, res: Response) => {
-    let newAccount : NewAccountCredentials = req.body;
-    let registrationResponse : RegisterResponse = await createNewAccount(newAccount);
+    let newAccount : RegistrationCredentials = req.body;
+    
+    let registrationResponse = await register(newAccount);
     if (registrationResponse.success){
-        const sessionID = createSession(registrationResponse.sessionData!);
-        res.cookie('sessionID', sessionID, {httpOnly : true});
-        res.send('Success');
+        res.cookie('sessionID', registrationResponse.sessionID, {httpOnly : true})
+        res.json({
+            "sessionData" : registrationResponse.sessionData
+        });  
     } else {
-        res.send(registrationResponse.message);
+        res.send("Registration failure");
     }
 });
 

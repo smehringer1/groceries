@@ -1,5 +1,5 @@
 
-export interface NewAccountCredentials {
+export interface RegistrationCredentials {
     username: string
     password: string
     name: string
@@ -8,6 +8,13 @@ export interface NewAccountCredentials {
 export interface LoginCredentials {
     username : string
     password : string
+}
+
+
+export interface LoginRegistrationResponse {
+    success : boolean
+    sessionID? : string
+    sessionData? : SessionData
 }
 
 export interface SessionData {

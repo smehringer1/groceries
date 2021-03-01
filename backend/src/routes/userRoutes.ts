@@ -1,6 +1,6 @@
 import express, {Request, Response} from 'express';
-import {NewAccountCredentials, RegisterResponse} from '../utils/interfaces';
-import {getAllUsers,createNewAccount} from '../db/userDBActions'
+import {RegistrationCredentials, RegisterResponse} from '../utils/interfaces';
+import {getAllUsers,createNewAccount} from '../db/user'
 
 const router = express.Router();
 
