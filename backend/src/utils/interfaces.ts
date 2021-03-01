@@ -54,8 +54,14 @@ export interface GroceryListing {
     createdByID : number
 }
 
-// TODO: Clearly define AuthenticatedRequest interface/type
 import {Request} from 'express';
 export interface AuthenticatedRequest extends Request {
     sessionData? : SessionData
+}
+
+export interface ISessionStore {
+    insertSessionData(sessionID : string, data : SessionData) : void
+    checkSessionID(requestSessionID : string) : boolean
+    fetchSessionData(requestSessionID : string) : SessionData | null
+    deleteSessionID(sessionID : string) : boolean
 }

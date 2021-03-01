@@ -1,6 +1,6 @@
-import { SessionData } from "../utils/interfaces";
+import { SessionData, ISessionStore } from "../utils/interfaces";
 
-export class SessionStore {
+export class SessionStore implements ISessionStore {
     private store: Map<string, SessionData>;
     constructor(){
         this.store = new Map();

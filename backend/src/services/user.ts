@@ -3,6 +3,7 @@ import { createSession } from "../sessions/sessions";
 import { compareHashes } from "../utils/hash";
 import { LoginCheckResponse, LoginCredentials, LoginRegistrationResponse, RegisterResponse, RegistrationCredentials, SessionData } from "../utils/interfaces";
 
+
 export const login = async (loginCredentials : LoginCredentials) : Promise<LoginRegistrationResponse> => {
     const queriedUser : LoginCheckResponse = await getUserForLogin(loginCredentials);
     if (queriedUser.success && await compareHashes(queriedUser.hashedPassword!, loginCredentials.password)) {
