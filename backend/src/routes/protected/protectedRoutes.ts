@@ -4,15 +4,16 @@ import { AuthenticatedRequest } from '../../utils/interfaces';
 
 const router = express.Router();
 
-let groceryRoutes = require('./groceryRoutes');
-
 router.use(authenticateSession);
 
 router.get('/', (req: AuthenticatedRequest, res : Response) => {
     res.send("Authenticated success. Access permitted to protected resources.")
 })
 
-router.use('/groceries', groceryRoutes);
+let groceryRouter = require('./groceryRoutes');
+router.use('/groceries', groceryRouter);
 
+// let smartRouter = require('./smartRoutes');
+// router.use('/smart', smartRouter);
 
 module.exports = router;

@@ -8,6 +8,8 @@ let protectedRouter = require('./routes/protected/protectedRoutes')
 
 app.use(express.json());
 
+let smartRouter = require('./routes/protected/smartRoutes');
+app.use('/smart', smartRouter);
 app.use('/auth', authRoutes);
 app.use('/protected', protectedRouter)
 app.get('/', (req: Request, res: Response) => res.send('Express + TypeScript Server'));

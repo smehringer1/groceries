@@ -11,6 +11,7 @@
     "express-jwt": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "puppeteer": "^8.0.0",
+    "tplink-smarthome-api": "^3.3.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
