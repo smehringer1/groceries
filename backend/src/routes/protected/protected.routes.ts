@@ -10,7 +10,7 @@ router.get('/', (req: AuthenticatedRequest, res : Response) => {
     res.send("Authenticated success. Access permitted to protected resources.")
 })
 
-let groceryRouter = require('./groceryRoutes');
+let groceryRouter = require('./grocery.routes');
 router.use('/groceries', groceryRouter);
 
 // let smartRouter = require('./smartRoutes');
