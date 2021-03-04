@@ -3,18 +3,7 @@ import {Request, Response, NextFunction} from 'express';
 import { v4 as uuidv4} from 'uuid';
 import { SessionStore } from "./SessionStore";
 
-let sessionStore = new SessionStore();
-
-const extractSessionID = (req : Request) : string | null => {
-    try {
-        if ('authorization' in req.headers){
-            const authHeader = req.headers.authorization!;
-            const requestSessionID = authHeader.split(' ')[1]; 
-            return requestSessionID;
-        }
-    } catch (err) {}
-    return null;
-}
+const sessionStore = new SessionStore();
 
 export const createSession = (data : SessionData) : string => {
     const uuid = uuidv4();
@@ -51,4 +40,15 @@ export const ensureUnauthenticated = (req : Request, res : Response, next : Next
     } else {
         next();
     }
+}
+
+const extractSessionID = (req : Request) : string | null => {
+    try {
+        if ('authorization' in req.headers){
+            const authHeader = req.headers.authorization!;
+            const requestSessionID = authHeader.split(' ')[1]; 
+            return requestSessionID;
+        }
+    } catch (err) {}
+    return null;
 }
