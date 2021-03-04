@@ -5,10 +5,8 @@ import { login, register } from '../services/user';
 
 const router = express.Router();
 
-
 router.post('/login', ensureUnauthenticated, async (req: Request, res: Response) => {
     const loginCredentials : LoginCredentials = req.body;
-    
     const loginResponse : LoginRegistrationResponse = await login(loginCredentials);
     if (loginResponse.success) {
         res.cookie('sessionID', loginResponse.sessionID, {httpOnly : true})

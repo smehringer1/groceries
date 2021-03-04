@@ -4,7 +4,7 @@ import { AuthenticatedRequest } from "../../utils/interfaces";
 
 const router = express.Router();
 
-let outlets = new SmartOutlets();
+const outlets = new SmartOutlets();
 outlets.setUp();
 
 router.post('/on', async (req : AuthenticatedRequest, res : Response) => {
