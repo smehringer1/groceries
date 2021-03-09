@@ -2,7 +2,7 @@ import express, {Request, Response} from 'express';
 import {AuthenticatedRequest, NewGrocery, GroceryRaw, GroceryCreationResponse} from '../../utils/interfaces'
 import {createGroceryListing} from '../../db/groceries';
 import { GroceryItem, Stores, Urgency } from '@prisma/client';
-import { createGrocery, getGroceries } from '../../services/groceries';
+import { createGrocery, deleteGrocery, getGroceries } from '../../services/groceries';
 
 const router = express.Router();
 
@@ -22,6 +22,21 @@ router.post('/', async (req : AuthenticatedRequest, res : Response) => {
         res.json({
             "success" : true,
             "grocery" : createGroceryResponse.groceryItem
+        });
+    } else {
+        res.json({
+            "success" : false
+        });
+    }
+})
+
+router.delete('/', async (req : AuthenticatedRequest, res : Response) => {
+    let groceryID : number = req.body;
+
+    let deleteSuccess = await deleteGrocery(groceryID);
+    if (deleteSuccess) {
+        res.json({
+            "success" : true
         });
     } else {
         res.json({

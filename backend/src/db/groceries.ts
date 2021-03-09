@@ -29,3 +29,16 @@ export const createGroceryListing = async (groceryListing : NewGrocery) : Promis
         }
     }
 }
+
+export const deleteGroceryListing = async (groceryID : number) : Promise<boolean> => {
+    try {
+        await prisma.groceryItem.delete({
+            where : {
+                id : groceryID
+            }
+        });
+        return true;
+    } catch (err) {
+        return false;
+    }
+}

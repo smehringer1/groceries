@@ -1,5 +1,5 @@
 import { GroceryItem, Stores, Urgency } from "@prisma/client";
-import { createGroceryListing, getGroceryListings } from "../db/groceries";
+import { createGroceryListing, deleteGroceryListing, getGroceryListings } from "../db/groceries";
 import { GroceryCreationResponse, NewGrocery, GroceryRaw, DB_GroceryResponse } from "../utils/interfaces";
 
 export const getGroceries = async () : Promise<GroceryItem[]> => {
@@ -19,4 +19,8 @@ export const createGrocery = async (requestBodyData : GroceryRaw, userID : numbe
     } else {
         return {success : false};
     }
+}
+
+export const deleteGrocery = async (groceryID : number) : Promise<boolean> => {
+    return await deleteGroceryListing(groceryID);
 }

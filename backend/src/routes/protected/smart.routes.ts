@@ -7,12 +7,12 @@ const router = express.Router();
 const outlets = new SmartOutlets();
 outlets.setUp();
 
-router.post('/on', async (req : AuthenticatedRequest, res : Response) => {
+router.get('/on', async (req : AuthenticatedRequest, res : Response) => {
     outlets.turnOn();
     res.send("On");
 })
 
-router.post('/off', async (req : AuthenticatedRequest, res : Response) => {
+router.get('/off', async (req : AuthenticatedRequest, res : Response) => {
     outlets.turnOff();
     res.send("Off");
 })
