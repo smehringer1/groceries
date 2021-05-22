@@ -33,6 +33,20 @@ export const removeSession = (req : AuthenticatedRequest) : boolean => {
     }
 }
 
+const extractSessionID = (req : Request) : string | null => {
+    try {
+        if ('authorization' in req.headers){
+            const authHeader = req.headers.authorization!;
+            const requestSessionID = authHeader.split(' ')[1]; 
+            console.log(`Extracting session ID: ${requestSessionID}`);
+            return requestSessionID;
+        }
+    } catch (err) {
+        console.log("Error in extracting session ID")
+    }
+    return null;
+}
+
 // Middleware
 
 export const authenticateSession = (req : AuthenticatedRequest, res: Response, next : NextFunction) : void => {
@@ -55,16 +69,3 @@ export const ensureUnauthenticated = (req : Request, res : Response, next : Next
     }
 }
 
-const extractSessionID = (req : Request) : string | null => {
-    try {
-        if ('authorization' in req.headers){
-            const authHeader = req.headers.authorization!;
-            const requestSessionID = authHeader.split(' ')[1]; 
-            console.log(`Extracting session ID: ${requestSessionID}`);
-            return requestSessionID;
-        }
-    } catch (err) {
-        console.log("Error in extracting session ID")
-    }
-    return null;
-}
