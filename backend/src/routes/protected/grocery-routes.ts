@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express';
+import express, {Response} from 'express';
 import {AuthenticatedRequest, GroceryRaw, GroceryCreationResponse} from '../../utils/interfaces'
 import { GroceryItem } from '@prisma/client';
 import { createGrocery, deleteGrocery, getGroceries } from '../../services/groceries-service';
