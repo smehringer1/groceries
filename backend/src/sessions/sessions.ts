@@ -7,12 +7,25 @@ const sessionStore = new SessionStore();
 
 export const createSession = (data : SessionData) : string => {
     const uuid = uuidv4();
-    sessionStore.insertSessionData(uuid, data);
+    console.log(`Creating Session ID: ${uuid}`);
+    sessionStore.setSessionData(uuid, data);
     return uuid;
 } 
 
+export const setSession = (sessionID : string, data : SessionData) : boolean => {
+    if (sessionStore.checkSessionID(sessionID)) {
+        console.log(`Setting new session data to: ${data}`);
+        sessionStore.setSessionData(sessionID, data);
+        return true;
+    } else {
+        console.log("Cannot set new session data");
+        return false;
+    }
+}
+
 export const removeSession = (req : AuthenticatedRequest) : boolean => {
     const sessionID = extractSessionID(req);
+    console.log(`Removing Session ID: ${sessionID}`);
     if (sessionID && sessionStore.deleteSessionID(sessionID!)) {
         return true;
     } else { // SessionID does not exist
@@ -47,8 +60,11 @@ const extractSessionID = (req : Request) : string | null => {
         if ('authorization' in req.headers){
             const authHeader = req.headers.authorization!;
             const requestSessionID = authHeader.split(' ')[1]; 
+            console.log(`Extracting session ID: ${requestSessionID}`);
             return requestSessionID;
         }
-    } catch (err) {}
+    } catch (err) {
+        console.log("Error in extracting session ID")
+    }
     return null;
 }

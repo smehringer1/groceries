@@ -10,10 +10,10 @@ router.get('/', (req: AuthenticatedRequest, res : Response) => {
     res.send("Authenticated success. Access permitted to protected resources.")
 })
 
-const groceryRouter = require('./grocery.routes');
+const groceryRouter = require('./grocery-routes');
 router.use('/groceries', groceryRouter);
 
-const smartRouter = require('./smart.routes');
+const smartRouter = require('./smart-routes');
 router.use('/smart', smartRouter);
 
 module.exports = router;

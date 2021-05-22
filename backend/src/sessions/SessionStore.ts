@@ -6,7 +6,7 @@ export class SessionStore implements ISessionStore {
         this.store = new Map();
     }
 
-    insertSessionData(sessionID : string, data : SessionData) : void {
+    setSessionData(sessionID : string, data : SessionData) : void {
         this.store.set(sessionID, data);
     }
 

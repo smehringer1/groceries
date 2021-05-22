@@ -66,13 +66,14 @@ export interface DB_GroceryResponse extends DB_Response{
 
 import {Request} from 'express';
 export interface AuthenticatedRequest extends Request {
+    loggedIn? : boolean
     sessionData? : SessionData
 }
 
 // Class interfaces
 
 export interface ISessionStore {
-    insertSessionData(sessionID : string, data : SessionData) : void
+    setSessionData(sessionID : string, data : SessionData) : void
     checkSessionID(requestSessionID : string) : boolean
     fetchSessionData(requestSessionID : string) : SessionData | null
     deleteSessionID(sessionID : string) : boolean

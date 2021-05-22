@@ -1,11 +1,11 @@
-import { createNewAccount, getUserForLogin } from "../db/user";
+import { UserDAO } from "../db/user-dao";
 import { createSession } from "../sessions/sessions";
 import { compareHashes } from "../utils/hash";
 import { DB_LoginCheckResponse, LoginCredentials, LoginRegistrationResponse, DB_RegisterResponse, RegistrationCredentials, SessionData } from "../utils/interfaces";
 
 
 export const login = async (loginCredentials : LoginCredentials) : Promise<LoginRegistrationResponse> => {
-    const queriedUser : DB_LoginCheckResponse = await getUserForLogin(loginCredentials);
+    const queriedUser : DB_LoginCheckResponse = await UserDAO.getUserForLogin(loginCredentials);
     if (queriedUser.success && await compareHashes(queriedUser.hashedPassword!, loginCredentials.password)) {
         const sessionData : SessionData = queriedUser.sessionData!;
         const sessionID : string = createSession(sessionData);
@@ -16,7 +16,7 @@ export const login = async (loginCredentials : LoginCredentials) : Promise<Login
 }
 
 export const register = async (registrationCredentials : RegistrationCredentials) : Promise<LoginRegistrationResponse> => {
-    let registrationResponse : DB_RegisterResponse = await createNewAccount(registrationCredentials);
+    let registrationResponse : DB_RegisterResponse = await UserDAO.createNewAccount(registrationCredentials);
     if (registrationResponse.success) {
         const sessionID = createSession(registrationResponse.sessionData!);
         return {success : true, sessionID : sessionID, sessionData : registrationResponse.sessionData!};

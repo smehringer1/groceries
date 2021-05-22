@@ -1,8 +1,7 @@
 import express, {Request, Response} from 'express';
-import {AuthenticatedRequest, NewGrocery, GroceryRaw, GroceryCreationResponse} from '../../utils/interfaces'
-import {createGroceryListing} from '../../db/groceries';
-import { GroceryItem, Stores, Urgency } from '@prisma/client';
-import { createGrocery, deleteGrocery, getGroceries } from '../../services/groceries';
+import {AuthenticatedRequest, GroceryRaw, GroceryCreationResponse} from '../../utils/interfaces'
+import { GroceryItem } from '@prisma/client';
+import { createGrocery, deleteGrocery, getGroceries } from '../../services/groceries-service';
 
 const router = express.Router();
 
