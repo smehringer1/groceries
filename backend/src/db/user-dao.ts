@@ -1,12 +1,11 @@
-import {PrismaClient} from '@prisma/client';
 import { RegistrationCredentials, LoginCredentials, DB_RegisterResponse, DB_LoginCheckResponse } from '../utils/interfaces'
 import { hash } from '../utils/hash';
 
-const prisma = new PrismaClient();
+import prisma from '../utils/prisma-client';
 
 export namespace UserDAO {
 
-    export const getUserForLogin = async (submittedCredentials : LoginCredentials) : Promise<DB_LoginCheckResponse> => {
+    const getUserForLogin = async (submittedCredentials : LoginCredentials) : Promise<DB_LoginCheckResponse> => {
         const locatedAccount = await prisma.account.findFirst({
             where: {
                 username : submittedCredentials.username
@@ -22,7 +21,7 @@ export namespace UserDAO {
         return {success : true, message : "Success retrieving user", sessionData : {user : locatedAccount.user} , hashedPassword : locatedAccount.password}
     }
 
-    export const getAllUsers = async () => {
+    const getAllUsers = async () => {
         console.log("Fetching all users....")
         let users = await prisma.account.findMany({
             include: {
@@ -33,7 +32,7 @@ export namespace UserDAO {
     }
 
 
-    export const createNewAccount = async (newAccountData : RegistrationCredentials) : Promise<DB_RegisterResponse> => {
+    const createNewAccount = async (newAccountData : RegistrationCredentials) : Promise<DB_RegisterResponse> => {
         // Verify login name does not exist
         const loginExistenceCheck = await prisma.account.findFirst({
             where: {

@@ -1,14 +1,15 @@
-import {GroceryItem, PrismaClient } from '@prisma/client';
+import { GroceryItem } from '@prisma/client';
 import { NewGrocery, DB_GroceryResponse } from '../utils/interfaces';
 
-const prisma = new PrismaClient();
+import prisma from '../utils/prisma-client';
 
 export namespace GroceriesDAO {
-    export const getGroceryListings = async () : Promise<GroceryItem[]> => {
+    
+    const getGroceryListings = async () : Promise<GroceryItem[]> => {
         return await prisma.groceryItem.findMany();
     }
     
-    export const createGroceryListing = async (groceryListing : NewGrocery) : Promise<DB_GroceryResponse> => {
+    const createGroceryListing = async (groceryListing : NewGrocery) : Promise<DB_GroceryResponse> => {
         let createdListingData : NewGrocery = $.extend({ itemName : groceryListing.itemName, createdByID : groceryListing.createdByID }, {
             urgency : groceryListing.urgency,
             store : groceryListing.store
@@ -31,7 +32,7 @@ export namespace GroceriesDAO {
         }
     }
     
-    export const deleteGroceryListing = async (groceryID : number) : Promise<boolean> => {
+    const deleteGroceryListing = async (groceryID : number) : Promise<boolean> => {
         try {
             await prisma.groceryItem.delete({
                 where : {
