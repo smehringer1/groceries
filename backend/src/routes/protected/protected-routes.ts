@@ -4,6 +4,8 @@ import { AuthenticatedRequest } from '../../utils/interfaces';
 
 const router = express.Router();
 
+// All protected routes are placed within this greater route
+
 router.use(authenticateSession);
 
 router.get('/', (req: AuthenticatedRequest, res : Response) => {

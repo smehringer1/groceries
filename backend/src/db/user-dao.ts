@@ -3,9 +3,14 @@ import { hash } from '../utils/hash';
 
 import prisma from '../utils/prisma-client';
 
+// Database interface for Users
+
 export namespace UserDAO {
 
-    const getUserForLogin = async (submittedCredentials : LoginCredentials) : Promise<DB_LoginCheckResponse> => {
+    // provide login credentials and return account if it exists
+    // fails if credentials are invalid
+
+    export const getUserForLogin = async (submittedCredentials : LoginCredentials) : Promise<DB_LoginCheckResponse> => {
         const locatedAccount = await prisma.account.findFirst({
             where: {
                 username : submittedCredentials.username
@@ -21,7 +26,9 @@ export namespace UserDAO {
         return {success : true, message : "Success retrieving user", sessionData : {user : locatedAccount.user} , hashedPassword : locatedAccount.password}
     }
 
-    const getAllUsers = async () => {
+    // get all users
+
+    export const getAllUsers = async () => {
         console.log("Fetching all users....")
         let users = await prisma.account.findMany({
             include: {
@@ -31,8 +38,10 @@ export namespace UserDAO {
         return users;
     }
 
+    // provide registration credentials and return account if success
+    // fails if account exists
 
-    const createNewAccount = async (newAccountData : RegistrationCredentials) : Promise<DB_RegisterResponse> => {
+    export const createNewAccount = async (newAccountData : RegistrationCredentials) : Promise<DB_RegisterResponse> => {
         // Verify login name does not exist
         const loginExistenceCheck = await prisma.account.findFirst({
             where: {

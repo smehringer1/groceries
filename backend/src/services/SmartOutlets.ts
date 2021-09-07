@@ -10,7 +10,8 @@ export class SmartOutlets {
     }
 
     async setUp() {
-        this.lights = await this.client.getDevice({ host: process.env.OVERHEAD_LIGHTS_IP});
+        //@ts-ignore
+        this.lights = await this.client.getDevice({ host: process.env.OVERHEAD_LIGHTS_IP}); 
     }
 
     turnOn() {

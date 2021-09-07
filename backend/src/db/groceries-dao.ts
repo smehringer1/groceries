@@ -3,13 +3,19 @@ import { NewGrocery, DB_GroceryResponse } from '../utils/interfaces';
 
 import prisma from '../utils/prisma-client';
 
+// Database interface for Grocery listings
+
 export namespace GroceriesDAO {
-    
-    const getGroceryListings = async () : Promise<GroceryItem[]> => {
+
+    // get all grocery listings
+
+    export const getGroceryListings = async () : Promise<GroceryItem[]> => {
         return await prisma.groceryItem.findMany();
     }
+
+    // create new grocery listing
     
-    const createGroceryListing = async (groceryListing : NewGrocery) : Promise<DB_GroceryResponse> => {
+    export const createGroceryListing = async (groceryListing : NewGrocery) : Promise<DB_GroceryResponse> => {
         let createdListingData : NewGrocery = $.extend({ itemName : groceryListing.itemName, createdByID : groceryListing.createdByID }, {
             urgency : groceryListing.urgency,
             store : groceryListing.store
@@ -31,8 +37,10 @@ export namespace GroceriesDAO {
             }
         }
     }
+
+    // delete grocery listing
     
-    const deleteGroceryListing = async (groceryID : number) : Promise<boolean> => {
+    export const deleteGroceryListing = async (groceryID : number) : Promise<boolean> => {
         try {
             await prisma.groceryItem.delete({
                 where : {
